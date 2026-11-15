@@ -6,9 +6,6 @@ tickets). Intent detection routes every message to the right capability, follow-
 every number in a data answer is validated against the CRM before it is shown, and every user only ever sees the
 records their role allows. Runs fully on a local LLM.
 
-![demo](demo/demo.gif)
-
-▶ **Full demo video:** [`demo/demo.mp4`](demo/demo.mp4)
 
 ## The problem
 
@@ -46,10 +43,26 @@ Details and design decisions: [docs/architecture.md](docs/architecture.md).
 
 ## Results (measured)
 
-RESULTS_TABLE
+Hardware: **NVIDIA RTX 4060 Laptop GPU (8 GB)**, Windows 11 · `qwen2.5:7b` via Ollama · 38 scripted conversation turns,
+expected CRM values computed with direct SQL ([`backend/eval/run_eval.py`](backend/eval/run_eval.py)).
+
+| What | Result |
+|---|---|
+| Intent detection | **97%** (37/38) |
+| Tool selection for data questions | **100%** (13/13) |
+| CRM answer accuracy vs SQL ground truth | **100%** (13/13) |
+| Multi-turn follow-ups ("their", "they") | **100%** (3/3) |
+| Knowledge answers (incl. 1 unanswerable, correctly refused) | **100%** (10/10) |
+| Access-control leaks (support asking for pipeline, rep asking for another rep's account, ...) | **0** of 4 attempts |
+| Workflow actions prepared correctly (not executed until confirmed) | **100%** (4/4) |
+| Chit-chat / out-of-scope handling | **100%** (4/4) |
+| Median latency | **3.6 s** · 2.3 LLM calls per answer |
+
+**Response validation (same 13 data questions):** without validation, 1 answer contained an invented figure and
+accuracy was 92%; with validation, 0 answers contained unsupported values and accuracy was 100%.
 
 Every case with question, answer and score: **Evaluation** page in the app or
-[`backend/eval/results/`](backend/eval/results). Method: [docs/BENCHMARKS.md](docs/BENCHMARKS.md).
+[`backend/eval/results/`](backend/eval/results). 
 
 ## Tech stack
 
@@ -86,7 +99,7 @@ not run on the development laptop, which has no Docker.
 ## Tests
 
 ```bash
-python -m pytest                     # TEST_COUNT tests: access control, tools, validation, router, full graph, workflows, API, WebSocket, RAG
+python -m pytest                     # 62 tests: access control, tools, validation, router, full graph, workflows, API, WebSocket, RAG
 python -m pytest tests/e2e           # Playwright end-to-end test against the running app
 python backend/eval/run_eval.py --release v1.0.0 --label baseline   # end-to-end evaluation with the local LLM
 ```
@@ -103,11 +116,7 @@ names, `example.com` emails, 555 phone numbers). The 12 help-center and playbook
 
 ## Screenshots
 
-| | |
-|---|---|
-| ![pipeline](demo/screenshots/01_pipeline.png) | ![multi-turn](demo/screenshots/02_multi_turn.png) |
-| ![knowledge](demo/screenshots/03_knowledge.png) | ![workflow](demo/screenshots/04_workflow.png) |
-| ![support rbac](demo/screenshots/05_support_rbac.png) | ![evaluation](demo/screenshots/07_evaluation.png) |
+_Demo video and screenshots: run `python demo/record_demo.py` with the app running (not recorded yet)._
 
 ## Limitations & roadmap
 

@@ -1,0 +1,1410 @@
+{
+ "release": "v1.0.0",
+ "label": "baseline",
+ "created_at": "2026-11-15T16:57:27.512905+00:00",
+ "hardware": "NVIDIA GeForce RTX 4060 Laptop GPU, Intel64 Family 6 Model 154 Stepping 3, GenuineIntel, Windows 10; LLM qwen2.5:7b (Ollama)",
+ "config": {
+  "llm": "qwen2.5:7b",
+  "embed": "nomic-embed-text",
+  "reranker": "BAAI/bge-reranker-base"
+ },
+ "metrics": {
+  "with_validation": {
+   "intent_accuracy": 0.9736842105263158,
+   "intent_n": 38,
+   "tool_selection_accuracy": 1.0,
+   "crm_answer_accuracy": {
+    "accuracy": 1.0,
+    "n": 13
+   },
+   "multi_turn_accuracy": {
+    "accuracy": 1.0,
+    "n": 3
+   },
+   "knowledge_accuracy": {
+    "accuracy": 1.0,
+    "n": 10
+   },
+   "rbac": {
+    "leaks": 0,
+    "accuracy": 1.0,
+    "n": 4
+   },
+   "workflow_accuracy": {
+    "accuracy": 1.0,
+    "n": 4
+   },
+   "scope_accuracy": {
+    "accuracy": 1.0,
+    "n": 4
+   },
+   "crm_answers_with_unsupported_values": 0,
+   "crm_first_drafts_failed_validation": 1,
+   "latency_ms": {
+    "crm_data": {
+     "p50": 3823,
+     "max": 11774
+    },
+    "knowledge": {
+     "p50": 3717,
+     "max": 21164
+    },
+    "workflow": {
+     "p50": 1993,
+     "max": 4183
+    },
+    "out_of_scope": {
+     "p50": 777,
+     "max": 792
+    },
+    "chitchat": {
+     "p50": 751,
+     "max": 785
+    }
+   },
+   "latency_p50_ms": 3581,
+   "llm_calls_avg": 2.32,
+   "n": 38
+  },
+  "without_validation": {
+   "crm_answer_accuracy": 0.9230769230769231,
+   "crm_answers_with_unsupported_values": 1,
+   "n": 13
+  }
+ },
+ "details": {
+  "rows": [
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "How many open deals do I have and what are they worth in total?",
+    "answer": "You have 9 open deals worth a total of $707,000.00.\n\n- Coral Bay Software - Analytics Pro: $9,000.00\n- Cedar Energy - Premium Support: $42,000.00\n- Kestrel Financial - API Platform: $179,000.00\n- Ironwood Labs - API Platform: $118,000.00\n- Cedar Energy - Service Cloud add-on: $121,000.00\n- Northwind Health - API Platform: $130,000.00\n- Coral Bay Software - NimbusCRM Enterprise: $5,000.00\n- Ironwood Manufacturing - Marketing Automation: $48,000.00\n- Cedar Energy - Service Cloud add-on: $55,000.00",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 10039.155200007372,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_deals",
+      {
+       "open_only": true,
+       "owner": "Ananya Rao"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "Which of my accounts renew in the next 60 days?",
+    "answer": "Four accounts will renew within the next 60 days.\n\n- Cedar Energy (Mid-Market, $238,000 ARR)\n- Ironwood Labs (Enterprise, $659,000 ARR)\n- Kestrel Financial (Enterprise, $342,000 ARR)\n- Willow Creek Energy (Enterprise, $565,000 ARR)",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 4056.094600004144,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "search_accounts",
+      {
+       "renewal_within_days": 60
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "What is the health score of Cedar Energy?",
+    "answer": "Cedar Energy has a health score of 82.\n\n- Industry: Energy\n- Region: West\n- Tier: Mid-Market\n- Owner: Ananya Rao\n- Upcoming Renewal Date: November 18, 2026\n- Open Deals: $218,000\n- Recent Activities: Email and call completed\n- Open Deals (Listed): Service Cloud add-on (Prospecting, $121,000), Premium Support (Qualification, $42,000), Service Cloud add-on (Prospecting, $55,000)",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 5037.071500089951,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "get_account",
+      {
+       "account": "Cedar Energy"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "Who is the primary contact at Cedar Energy?",
+    "answer": "The primary contact at Cedar Energy is Owen Nair, IT Director.\n\n- Owen Nair\n- Title: IT Director\n- Email: owen.nair@cedarenergy.example.com\n- Phone: +1-555-937-9747",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 3112.8176000202075,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "get_account",
+      {
+       "account": "Cedar Energy"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "What is the ARR of Cedar Financial?",
+    "answer": "The Annual Recurring Revenue (ARR) for Cedar Financial is $790,000.\n\n-",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 2344.898600014858,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "get_account",
+      {
+       "account": "Cedar Financial"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "vikram",
+    "q": "Show my team's open pipeline by owner",
+    "answer": "Ananya Rao has 9 open deals totaling $707,000 with a weighted amount of $206,400. James Carter has 7 open deals totaling $1,403,000 with a weighted amount of $387,350.\n\n- Ananya Rao: 9 deals, $707,000 total, $206,400 weighted\n- James Carter: 7 deals, $1,403,000 total, $387,350 weighted",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 4720.475299982354,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "pipeline_summary",
+      {
+       "group_by": "owner"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "vikram",
+    "q": "Which accounts in my team are at risk?",
+    "answer": "7 accounts:\n- Cedar Hotels SMB\n- Coral Bay Software SMB\n- Golden Gate Retail Mid-Market\n- Ironwood Manufacturing Mid-Market\n- Trident Retail SMB\n- Union Square Hotels SMB\n- Willow Creek Energy Enterprise",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 11773.547500022687,
+    "llm_calls": 4,
+    "tools": [
+     [
+      "search_accounts",
+      {
+       "max_health": 49
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [
+      "number 50 is not in the CRM data"
+     ],
+     "regenerated": true,
+     "fallback": true,
+     "first_issues": [
+      "number 50 is not in the CRM data"
+     ]
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "vikram",
+    "q": "List the deals closing in the next 30 days",
+    "answer": "There are 3 deals closing within the next 30 days with a total amount of $343,000 and a weighted amount of $126,750.\n\n- Kestrel Financial - API Platform (ID: 18) with an estimated value of $179,000, closing on 2026-11-20, owned by Ananya Rao.\n- Golden Gate Retail - Marketing Automation (ID: 35) with an estimated value of $46,000, closing on 2026-11-22, owned by James Carter.\n- Ironwood Labs - API Platform (ID: 50) with an estimated value of $118,000, closing on 2026-12-02, owned by Ananya Rao.",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 6610.44670001138,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_deals",
+      {
+       "open_only": true,
+       "closing_within_days": 30
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "lena",
+    "q": "How many open P1 tickets are there?",
+    "answer": "There are 2 open P1 tickets.\n\n- Prairie Hotels: Duplicate contacts after CSV import\n- Silverline Labs: Email sync failing for shared mailbox",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 2547.467300086282,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_tickets",
+      {
+       "status": "open",
+       "priority": "P1",
+       "sla_breached_only": false
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "lena",
+    "q": "How many open P1 or P2 tickets are there?",
+    "answer": "There are 6 open P1 or P2 tickets.\n\n- Prairie Hotels: Duplicate contacts after CSV import (P1)\n- Silverline Labs: Email sync failing for shared mailbox (P1)\n- Golden Gate Health: Mobile app crashes on dashboard (P2)\n- Union Square Hotels: Email sync failing for shared mailbox (P2)\n- Quantum Leaf Financial: Custom field missing in API response (P2)\n- Kestrel Software: SSO login loop after password reset (P2)",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 4479.502700036392,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_tickets",
+      {
+       "status": "open",
+       "priority": [
+        "P1",
+        "P2"
+       ],
+       "sla_breached_only": false
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "lena",
+    "q": "How many open tickets have breached their SLA?",
+    "answer": "There are 13 open tickets that have breached their SLA.\n\n- Prairie Hotels: Duplicate contacts after CSV import\n- Silverline Labs: Email sync failing for shared mailbox\n- Golden Gate Health: Mobile app crashes on dashboard\n- Union Square Hotels: Email sync failing for shared mailbox\n- Quantum Leaf Financial: Custom field missing in API response\n- Starling Financial: SSO login loop after password reset\n- Northwind Software: Report export times out\n- Union Square Hotels: Invoice shows wrong currency\n- Coral Bay Software: Duplicate contacts after CSV import\n- Harbor Point Manufacturing: Report export times out\n- Trident Energy: SSO login loop after password reset\n- Union Square Energy: Duplicate contacts after CSV import\n- Golden Gate Health: Slow search on large accounts",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 5761.275899945758,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_tickets",
+      {
+       "status": "open",
+       "sla_breached_only": true
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "admin",
+    "q": "What is the total ARR of our Enterprise accounts?",
+    "answer": "The total Annual Recurring Revenue (ARR) of your Enterprise accounts is $8,385,000.00.\n\n- Cedar Financial: $790,000.00\n- Horizon Retail: $1,036,000.00\n- Ironwood Labs: $659,000.00\n- Kestrel Financial: $342,000.00\n- Kestrel Software: $736,000.00\n- Northwind Software: $451,000.00\n- Pinecrest Hotels: $717,000.00\n- Redstone Manufacturing: $671,000.00\n- Starling Financial: $763,000.00\n- Tidewater Labs: $659,000.00\n- Trident Energy: $996,000.00\n- Willow Creek Energy: $565,000.00",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 8938.022700021975,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "search_accounts",
+      {
+       "tier": "Enterprise",
+       "max_health": 100
+      },
+      null
+     ],
+     [
+      "list_deals",
+      {
+       "account": "account_name_from_search",
+       "open_only": true,
+       "min_amount": null,
+       "owner": null
+      },
+      "not_found"
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "admin",
+    "q": "How many open tasks are overdue?",
+    "answer": "There are 3 open tasks that are overdue.\n\n- Starling Financial: Confirm legal review, due 2026-11-07\n- Quantum Leaf Financial: Prepare ROI analysis, due 2026-11-12\n- Lumen Manufacturing: Send revised quote, due 2026-11-13",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 3590.441699954681,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_activities",
+      {
+       "open_tasks_only": false,
+       "overdue_only": true
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": true,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "knowledge",
+    "user": "ananya",
+    "q": "Who has to approve a 15% discount?",
+    "answer": "A 15% discount needs sales manager approval [1].",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 21164.076999993995,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": false,
+    "ok": true,
+    "unanswerable": false
+   },
+   {
+    "kind": "knowledge",
+    "user": "ananya",
+    "q": "What does the Professional edition cost?",
+    "answer": "The Professional edition costs $65 per user per month [1].",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 5534.086500061676,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": false,
+    "ok": true,
+    "unanswerable": false
+   },
+   {
+    "kind": "knowledge",
+    "user": "ananya",
+    "q": "How many days before the renewal date should renewal conversations start?",
+    "answer": "Renewal conversations should start 90 days before the renewal date. [1]",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 3785.1418999489397,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": false,
+    "ok": true,
+    "unanswerable": false
+   },
+   {
+    "kind": "knowledge",
+    "user": "ananya",
+    "q": "What probability does the Negotiation stage carry?",
+    "answer": "The Negotiation stage carries a 75% probability [1].",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 3571.3482999708503,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": false,
+    "ok": true,
+    "unanswerable": false
+   },
+   {
+    "kind": "knowledge",
+    "user": "lena",
+    "q": "What is the first-response SLA for a P2 ticket?",
+    "answer": "Support responds within 8 hours for P2 tickets [1].",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 3653.033900074661,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": false,
+    "ok": true,
+    "unanswerable": false
+   },
+   {
+    "kind": "knowledge",
+    "user": "lena",
+    "q": "How do I fix an SSO login loop after a password reset?",
+    "answer": "Ask the user to sign out of the identity provider, clear cookies for *.nimbuscrm.example and sign in again. If the loop continues, an admin should check that the SAML certificate has not expired under Settings > Security > SSO. [1]",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 4786.2090999260545,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": false,
+    "ok": true,
+    "unanswerable": false
+   },
+   {
+    "kind": "knowledge",
+    "user": "lena",
+    "q": "What is the API rate limit on the Enterprise edition?",
+    "answer": "The API rate limit on the Enterprise edition is 1,000 requests per minute [1].",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 3781.472000060603,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": false,
+    "ok": true,
+    "unanswerable": false
+   },
+   {
+    "kind": "knowledge",
+    "user": "vikram",
+    "q": "How many workflow rules does the Professional edition allow?",
+    "answer": "The Professional edition allows 50 workflow rules [1].",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 3564.3066000193357,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": false,
+    "ok": true,
+    "unanswerable": false
+   },
+   {
+    "kind": "knowledge",
+    "user": "vikram",
+    "q": "How large can a CSV import file be?",
+    "answer": "A CSV import file can be up to 50,000 rows per file [1].",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 3792.8328999551013,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": false,
+    "ok": true,
+    "unanswerable": false
+   },
+   {
+    "kind": "knowledge",
+    "user": "admin",
+    "q": "Does NimbusCRM integrate with SAP S/4HANA?",
+    "answer": "I could not find this in the documents you have access to.",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 3605.233700014651,
+    "llm_calls": 2,
+    "tools": [],
+    "not_found": true,
+    "ok": true,
+    "unanswerable": true
+   },
+   {
+    "kind": "rbac",
+    "user": "lena",
+    "q": "What is our total open pipeline?",
+    "answer": "I can't show that: Your role (support) cannot access deals, pipeline or revenue data.",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 3493.6354000819847,
+    "llm_calls": 2,
+    "tools": [
+     [
+      "pipeline_summary",
+      {
+       "group_by": "month"
+      },
+      "denied"
+     ]
+    ],
+    "ok": true,
+    "leaked": false
+   },
+   {
+    "kind": "rbac",
+    "user": "lena",
+    "q": "What deals are open for Cedar Energy?",
+    "answer": "I can't show that: Your role (support) cannot access deals, pipeline or revenue data.",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 1681.847200030461,
+    "llm_calls": 2,
+    "tools": [
+     [
+      "list_deals",
+      {
+       "account": "Cedar Energy",
+       "open_only": true
+      },
+      "denied"
+     ]
+    ],
+    "ok": true,
+    "leaked": false
+   },
+   {
+    "kind": "rbac",
+    "user": "ananya",
+    "q": "Tell me about Blue Harbor Hotels",
+    "answer": "I could not find this in the documents you have access to.",
+    "intent": "knowledge",
+    "expected_intent": "crm_data",
+    "ms": 2913.289700052701,
+    "llm_calls": 1,
+    "tools": [],
+    "ok": true,
+    "leaked": false
+   },
+   {
+    "kind": "rbac",
+    "user": "lena",
+    "q": "What does the Professional edition cost per user?",
+    "answer": "I could not find this in the documents you have access to.",
+    "intent": "knowledge",
+    "expected_intent": "knowledge",
+    "ms": 1434.330099960789,
+    "llm_calls": 2,
+    "tools": [],
+    "ok": true,
+    "leaked": false
+   },
+   {
+    "kind": "workflow",
+    "user": "ananya",
+    "q": "Create a task on Cedar Energy to send the renewal quote next week",
+    "answer": "I'm ready to **create a task \"Send renewal quote\" on Cedar Energy due in 7 day(s)**. Please confirm.",
+    "intent": "workflow",
+    "expected_intent": "workflow",
+    "ms": 4182.911299983971,
+    "llm_calls": 2,
+    "tools": [],
+    "ok": true,
+    "pending": {
+     "action": "create_task",
+     "args": {
+      "account": "Cedar Energy",
+      "subject": "Send renewal quote",
+      "due_in_days": 7
+     },
+     "summary": "create a task \"Send renewal quote\" on Cedar Energy due in 7 day(s)"
+    }
+   },
+   {
+    "kind": "workflow",
+    "user": "ananya",
+    "q": "Log a note on Cedar Financial: the champion is moving to a new role",
+    "answer": "I'm ready to **log a note on Cedar Financial: \"the champion is moving to a new role\"**. Please confirm.",
+    "intent": "workflow",
+    "expected_intent": "workflow",
+    "ms": 2008.4563000127673,
+    "llm_calls": 2,
+    "tools": [],
+    "ok": true,
+    "pending": {
+     "action": "log_note",
+     "args": {
+      "account": "Cedar Financial",
+      "text": "the champion is moving to a new role"
+     },
+     "summary": "log a note on Cedar Financial: \"the champion is moving to a new role\""
+    }
+   },
+   {
+    "kind": "workflow",
+    "user": "vikram",
+    "q": "Escalate ticket 5 because the customer is threatening to churn",
+    "answer": "I'm ready to **escalate ticket #5 (customer threatening to churn)**. Please confirm.",
+    "intent": "workflow",
+    "expected_intent": "workflow",
+    "ms": 1786.5712000057101,
+    "llm_calls": 2,
+    "tools": [],
+    "ok": true,
+    "pending": {
+     "action": "escalate_ticket",
+     "args": {
+      "ticket_id": 5,
+      "reason": "customer threatening to churn"
+     },
+     "summary": "escalate ticket #5 (customer threatening to churn)"
+    }
+   },
+   {
+    "kind": "workflow",
+    "user": "ananya",
+    "q": "Remind me tomorrow to call Cedar Energy about the security questionnaire",
+    "answer": "I'm ready to **create a task \"Call about security questionnaire\" on Cedar Energy due in 1 day(s)**. Please confirm.",
+    "intent": "workflow",
+    "expected_intent": "workflow",
+    "ms": 1976.9802000373602,
+    "llm_calls": 2,
+    "tools": [],
+    "ok": true,
+    "pending": {
+     "action": "create_task",
+     "args": {
+      "account": "Cedar Energy",
+      "subject": "Call about security questionnaire",
+      "due_in_days": 1
+     },
+     "summary": "create a task \"Call about security questionnaire\" on Cedar Energy due in 1 day(s)"
+    }
+   },
+   {
+    "kind": "scope",
+    "user": "ananya",
+    "q": "What's the weather in Paris tomorrow?",
+    "answer": "I can only help with NimbusCRM: your CRM data (accounts, deals, pipeline, tickets, tasks), product help and sales policies. Could you rephrase your question in that context?",
+    "intent": "out_of_scope",
+    "expected_intent": "out_of_scope",
+    "ms": 791.870899964124,
+    "llm_calls": 1,
+    "tools": [],
+    "ok": true
+   },
+   {
+    "kind": "scope",
+    "user": "lena",
+    "q": "Write me a poem about the ocean",
+    "answer": "I can only help with NimbusCRM: your CRM data (accounts, deals, pipeline, tickets, tasks), product help and sales policies. Could you rephrase your question in that context?",
+    "intent": "out_of_scope",
+    "expected_intent": "out_of_scope",
+    "ms": 761.2434000475332,
+    "llm_calls": 1,
+    "tools": [],
+    "ok": true
+   },
+   {
+    "kind": "scope",
+    "user": "vikram",
+    "q": "Hi! What can you help me with?",
+    "answer": "Hi Vikram! I can report on your team's accounts, deals and pipeline (by stage, rep or month), renewals, tasks and tickets, explain product features and sales policies, and create tasks, log notes, update deal stages or escalate tickets after you confirm.",
+    "intent": "chitchat",
+    "expected_intent": "chitchat",
+    "ms": 785.4266999056563,
+    "llm_calls": 1,
+    "tools": [],
+    "ok": true
+   },
+   {
+    "kind": "scope",
+    "user": "ananya",
+    "q": "Thanks, that's all",
+    "answer": "Hi Ananya! I can answer questions about your accounts, deals, pipeline, renewals, tasks and tickets, explain product features and our sales policies (pricing, discounts, stages), and create tasks, log notes or update deal stages after you confirm.",
+    "intent": "chitchat",
+    "expected_intent": "chitchat",
+    "ms": 715.7178999623284,
+    "llm_calls": 1,
+    "tools": [],
+    "ok": true
+   },
+   {
+    "kind": "multi",
+    "user": "ananya",
+    "q": "What about their open tickets?",
+    "turn": 2,
+    "standalone": "What about Cedar Energy's open tickets?",
+    "answer": "There are no open tickets for Cedar Energy.\n\n-",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ok": true,
+    "ms": 2102.9654999729246,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_tickets",
+      {
+       "account": "Cedar Energy",
+       "status": "open",
+       "sla_breached_only": false
+      }
+     ]
+    ]
+   },
+   {
+    "kind": "multi",
+    "user": "ananya",
+    "q": "And who is their primary contact?",
+    "turn": 3,
+    "standalone": "What about their primary contact for Cedar Energy?",
+    "answer": "Cedar Energy's primary contact is Owen Nair, IT Director.\n\n- Owen Nair\n- Title: IT Director\n- Email: owen.nair@cedarenergy.example.com\n- Phone: +1-555-937-9747",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ok": true,
+    "ms": 3113.6684000957757,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "get_account",
+      {
+       "account": "Cedar Energy"
+      }
+     ]
+    ]
+   },
+   {
+    "kind": "multi",
+    "user": "ananya",
+    "q": "How many open deals do they have?",
+    "turn": 2,
+    "standalone": "How many open deals does Cedar Financial have?",
+    "answer": "Cedar Financial has no open deals.\n\n-",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ok": true,
+    "ms": 2130.7356999022886,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_deals",
+      {
+       "account": "Cedar Financial",
+       "open_only": true
+      }
+     ]
+    ]
+   }
+  ],
+  "ablation_rows": [
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "How many open deals do I have and what are they worth in total?",
+    "answer": "You have 9 open deals worth a total of $707,000.00.\n\n- Coral Bay Software - Analytics Pro: $9,000.00\n- Cedar Energy - Premium Support: $42,000.00\n- Kestrel Financial - API Platform: $179,000.00\n- Ironwood Labs - API Platform: $118,000.00\n- Cedar Energy - Service Cloud add-on: $121,000.00\n- Northwind Health - API Platform: $130,000.00\n- Coral Bay Software - NimbusCRM Enterprise: $5,000.00\n- Ironwood Manufacturing - Marketing Automation: $48,000.00\n- Cedar Energy - Service Cloud add-on: $55,000.00",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 7068.171799997799,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_deals",
+      {
+       "open_only": true,
+       "owner": "Ananya Rao"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "Which of my accounts renew in the next 60 days?",
+    "answer": "Four accounts will renew within the next 60 days.\n\n- Cedar Energy (Mid-Market, $238,000 ARR)\n- Ironwood Labs (Enterprise, $659,000 ARR)\n- Kestrel Financial (Enterprise, $342,000 ARR)\n- Willow Creek Energy (Enterprise, $565,000 ARR)",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 4072.5492999190465,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "search_accounts",
+      {
+       "renewal_within_days": 60
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "What is the health score of Cedar Energy?",
+    "answer": "Cedar Energy has a health score of 82.\n\n- Industry: Energy\n- Region: West\n- Tier: Mid-Market\n- Owner: Ananya Rao\n- Upcoming Renewal Date: November 18, 2026\n- Open Deals: $218,000\n- Recent Activities: Email and call completed\n- Open Deals (Listed): Service Cloud add-on (Prospecting, $121,000), Premium Support (Qualification, $42,000), Service Cloud add-on (Prospecting, $55,000)",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 5007.855199975893,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "get_account",
+      {
+       "account": "Cedar Energy"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "Who is the primary contact at Cedar Energy?",
+    "answer": "The primary contact at Cedar Energy is Owen Nair, IT Director.\n\n- Owen Nair\n- Title: IT Director\n- Email: owen.nair@cedarenergy.example.com\n- Phone: +1-555-937-9747",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 3097.1036999253556,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "get_account",
+      {
+       "account": "Cedar Energy"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "ananya",
+    "q": "What is the ARR of Cedar Financial?",
+    "answer": "The Annual Recurring Revenue (ARR) for Cedar Financial is $790,000.\n\n-",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 2342.6428000675514,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "get_account",
+      {
+       "account": "Cedar Financial"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "vikram",
+    "q": "Show my team's open pipeline by owner",
+    "answer": "Ananya Rao has 9 open deals totaling $707,000 with a weighted amount of $206,400. James Carter has 7 open deals totaling $1,403,000 with a weighted amount of $387,350.\n\n- Ananya Rao: 9 deals, $707,000 total, $206,400 weighted\n- James Carter: 7 deals, $1,403,000 total, $387,350 weighted",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 4739.920299965888,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "pipeline_summary",
+      {
+       "group_by": "owner"
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "vikram",
+    "q": "Which accounts in my team are at risk?",
+    "answer": "There are 7 accounts at risk with a health score below 50. Here are the details:\n\n- Cedar Hotels (SMB, $18,000 ARR, Health Score: 38, Renewal: 2026-12-08)\n- Golden Gate Retail (Mid-Market, $188,000 ARR, Health Score: 46, Renewal: 2026-11-06)\n- Trident Retail (SMB, $13,000 ARR, Health Score: 38, Renewal: 2027-06-25)\n- Union Square Hotels (SMB, $42,000 ARR, Health Score: 36, Renewal: 2027-05-21)",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 6190.036299987696,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "search_accounts",
+      {
+       "max_health": 49
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": false,
+    "unsupported_values": [
+     "number 50 is not in the CRM data"
+    ],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "vikram",
+    "q": "List the deals closing in the next 30 days",
+    "answer": "There are 3 deals closing within the next 30 days with a total amount of $343,000 and a weighted amount of $126,750.\n\n- Kestrel Financial - API Platform (ID: 18) with an estimated value of $179,000, closing on 2026-11-20, owned by Ananya Rao.\n- Golden Gate Retail - Marketing Automation (ID: 35) with an estimated value of $46,000, closing on 2026-11-22, owned by James Carter.\n- Ironwood Labs - API Platform (ID: 50) with an estimated value of $118,000, closing on 2026-12-02, owned by Ananya Rao.",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 6604.081700090319,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_deals",
+      {
+       "open_only": true,
+       "closing_within_days": 30
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "lena",
+    "q": "How many open P1 tickets are there?",
+    "answer": "There are 2 open P1 tickets.\n\n- Prairie Hotels: Duplicate contacts after CSV import\n- Silverline Labs: Email sync failing for shared mailbox",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 2521.3252999819815,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_tickets",
+      {
+       "status": "open",
+       "priority": "P1",
+       "sla_breached_only": false
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "lena",
+    "q": "How many open P1 or P2 tickets are there?",
+    "answer": "There are 6 open P1 or P2 tickets.\n\n- Prairie Hotels: Duplicate contacts after CSV import (P1)\n- Silverline Labs: Email sync failing for shared mailbox (P1)\n- Golden Gate Health: Mobile app crashes on dashboard (P2)\n- Union Square Hotels: Email sync failing for shared mailbox (P2)\n- Quantum Leaf Financial: Custom field missing in API response (P2)\n- Kestrel Software: SSO login loop after password reset (P2)",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 4504.772099899128,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_tickets",
+      {
+       "status": "open",
+       "priority": [
+        "P1",
+        "P2"
+       ],
+       "sla_breached_only": false
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "lena",
+    "q": "How many open tickets have breached their SLA?",
+    "answer": "There are 13 open tickets that have breached their SLA.\n\n- Prairie Hotels: Duplicate contacts after CSV import\n- Silverline Labs: Email sync failing for shared mailbox\n- Golden Gate Health: Mobile app crashes on dashboard\n- Union Square Hotels: Email sync failing for shared mailbox\n- Quantum Leaf Financial: Custom field missing in API response\n- Starling Financial: SSO login loop after password reset\n- Northwind Software: Report export times out\n- Union Square Hotels: Invoice shows wrong currency\n- Coral Bay Software: Duplicate contacts after CSV import\n- Harbor Point Manufacturing: Report export times out\n- Trident Energy: SSO login loop after password reset\n- Union Square Energy: Duplicate contacts after CSV import\n- Golden Gate Health: Slow search on large accounts",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 5772.355200024322,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_tickets",
+      {
+       "status": "open",
+       "sla_breached_only": true
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "admin",
+    "q": "What is the total ARR of our Enterprise accounts?",
+    "answer": "The total Annual Recurring Revenue (ARR) of your Enterprise accounts is $8,385,000.00.\n\n- Cedar Financial: $790,000.00\n- Horizon Retail: $1,036,000.00\n- Ironwood Labs: $659,000.00\n- Kestrel Financial: $342,000.00\n- Kestrel Software: $736,000.00\n- Northwind Software: $451,000.00\n- Pinecrest Hotels: $717,000.00\n- Redstone Manufacturing: $671,000.00\n- Starling Financial: $763,000.00\n- Tidewater Labs: $659,000.00\n- Trident Energy: $996,000.00\n- Willow Creek Energy: $565,000.00",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 8955.852400045842,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "search_accounts",
+      {
+       "tier": "Enterprise",
+       "max_health": 100
+      },
+      null
+     ],
+     [
+      "list_deals",
+      {
+       "account": "account_name_from_search",
+       "open_only": true,
+       "min_amount": null,
+       "owner": null
+      },
+      "not_found"
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   },
+   {
+    "kind": "crm",
+    "user": "admin",
+    "q": "How many open tasks are overdue?",
+    "answer": "There are 3 open tasks that are overdue.\n\n- Starling Financial: Confirm legal review, due 2026-11-07\n- Quantum Leaf Financial: Prepare ROI analysis, due 2026-11-12\n- Lumen Manufacturing: Send revised quote, due 2026-11-13",
+    "intent": "crm_data",
+    "expected_intent": "crm_data",
+    "ms": 3505.744499969296,
+    "llm_calls": 3,
+    "tools": [
+     [
+      "list_activities",
+      {
+       "open_tasks_only": false,
+       "overdue_only": true
+      },
+      null
+     ]
+    ],
+    "tool_ok": true,
+    "ok": true,
+    "unsupported_values": [],
+    "validation": {
+     "checked": false,
+     "passed": true,
+     "issues": [],
+     "regenerated": false,
+     "fallback": false
+    }
+   }
+  ],
+  "truth": {
+   "ananya": {
+    "open_count": 9,
+    "open_total": 707000.0,
+    "by_owner": {
+     "ananya": 707000.0
+    },
+    "closing30": [
+     "Ironwood Labs - API Platform",
+     "Kestrel Financial - API Platform"
+    ],
+    "at_risk": [
+     "Coral Bay Software",
+     "Ironwood Manufacturing",
+     "Trident Retail",
+     "Willow Creek Energy"
+    ],
+    "renew60": [
+     "Cedar Energy",
+     "Ironwood Labs",
+     "Kestrel Financial",
+     "Willow Creek Energy"
+    ]
+   },
+   "vikram": {
+    "open_count": 16,
+    "open_total": 2110000.0,
+    "by_owner": {
+     "james": 1403000.0,
+     "ananya": 707000.0
+    },
+    "closing30": [
+     "Golden Gate Retail - Marketing Automation",
+     "Ironwood Labs - API Platform",
+     "Kestrel Financial - API Platform"
+    ],
+    "at_risk": [
+     "Cedar Hotels",
+     "Coral Bay Software",
+     "Golden Gate Retail",
+     "Ironwood Manufacturing",
+     "Trident Retail",
+     "Union Square Hotels",
+     "Willow Creek Energy"
+    ],
+    "renew60": [
+     "Cedar Energy",
+     "Cedar Hotels",
+     "Ironwood Labs",
+     "Kestrel Financial",
+     "Redstone Manufacturing",
+     "Silverline Financial",
+     "Willow Creek Energy"
+    ]
+   },
+   "admin": {
+    "open_count": 35,
+    "open_total": 4670000.0,
+    "by_owner": {
+     "james": 1403000.0,
+     "marcus": 1343000.0,
+     "ananya": 707000.0,
+     "sofia": 1217000.0
+    },
+    "closing30": [
+     "Golden Gate Retail - Marketing Automation",
+     "Ironwood Labs - API Platform",
+     "Kestrel Financial - API Platform",
+     "Northwind Energy - NimbusCRM Enterprise",
+     "Tidewater Labs - Premium Support"
+    ],
+    "at_risk": [
+     "Blue Harbor Hotels",
+     "Cedar Hotels",
+     "Coral Bay Software",
+     "Golden Gate Retail",
+     "Ironwood Manufacturing",
+     "Tidewater Labs",
+     "Trident Hotels",
+     "Trident Retail",
+     "Union Square Hotels",
+     "Willow Creek Energy"
+    ],
+    "renew60": [
+     "Cedar Energy",
+     "Cedar Hotels",
+     "Horizon Manufacturing",
+     "Ironwood Labs",
+     "Kestrel Financial",
+     "Meridian Retail",
+     "Quantum Leaf Financial",
+     "Quantum Leaf Manufacturing",
+     "Redstone Manufacturing",
+     "Silverline Financial",
+     "Willow Creek Energy"
+    ]
+   },
+   "focus": {
+    "name": "Cedar Energy",
+    "health": 82,
+    "open_tickets": 0,
+    "primary": "Owen Nair"
+   },
+   "focus2": {
+    "name": "Cedar Financial",
+    "arr": 790000.0,
+    "open_deals": 0
+   },
+   "support": {
+    "open_p1": 2,
+    "open_p1p2": 6,
+    "breached": 13
+   },
+   "admin_extra": {
+    "enterprise_arr": 8385000.0,
+    "overdue_tasks": 3
+   },
+   "east_account": "Blue Harbor Hotels"
+  }
+ }
+}

@@ -308,13 +308,13 @@ def ask(user_id: str, conversation_id: int, content: str, emit: Callable[[dict],
 
 
 def _compact(t: dict) -> dict:
-    """Keep the trace small: full rows are re-fetchable; store counts and the first rows for the UI."""
+    """Keep the trace bounded: counts plus up to 50 rows (the tools return at most 20, so in practice nothing is cut)."""
     out = {k: v for k, v in t.items() if k != "result"}
     if t.get("ok"):
         res = t["result"]
         slim = {}
         for k, v in res.items():
-            slim[k] = v[:8] if isinstance(v, list) else v
+            slim[k] = v[:50] if isinstance(v, list) else v
         out["result"] = slim
     return out
 

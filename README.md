@@ -6,6 +6,9 @@ tickets). Intent detection routes every message to the right capability, follow-
 every number in a data answer is validated against the CRM before it is shown, and every user only ever sees the
 records their role allows. Runs fully on a local LLM.
 
+![demo](demo/demo.gif)
+
+▶ **Full demo video:** [`demo/demo.mp4`](demo/demo.mp4)
 
 ## The problem
 

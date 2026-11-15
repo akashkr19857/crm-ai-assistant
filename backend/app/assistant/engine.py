@@ -29,7 +29,8 @@ PLAN_SYSTEM = """You plan CRM tool calls for an assistant. Choose the tool call(
 the question. Use at most 2 calls. Use only these tools and only the listed arguments:
 {catalogue}
 
-Rules: "my"/"I" means the signed-in user's own records - the tools already restrict data to what the user may see, so
+Rules: only set filters the question explicitly asks for; never invent filter values (no industry, region, stage,
+owner or account unless the question names it). "my"/"I" means the signed-in user's own records - the tools already restrict data to what the user may see, so
 do not pass the user's name as owner. Use renewal_within_days / closing_within_days for "this month" (30),
 "this quarter" (90), "next two weeks" (14). "At risk" accounts means max_health 49. Use get_account when one account
 is named and the question is about that account in general.

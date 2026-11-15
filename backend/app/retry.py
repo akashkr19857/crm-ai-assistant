@@ -9,7 +9,7 @@ import time
 
 import httpx
 
-log = logging.getLogger("rfp.retry")
+log = logging.getLogger("crm.retry")
 DELAYS = (3.0, 8.0, 20.0, 40.0)
 
 

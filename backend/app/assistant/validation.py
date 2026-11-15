@@ -26,8 +26,9 @@ def collect_values(obj: Any, nums: set[float], dates: set[str]) -> None:
     elif isinstance(obj, str):
         for m in _ISO.finditer(obj):
             dates.add(m.group(0))
-        if re.fullmatch(r"-?\d+(\.\d+)?", obj.strip()):
-            nums.add(float(obj))
+        # digits inside text values (phone numbers, emails, names) are real data too
+        for d in re.findall(r"\d+(?:\.\d+)?", obj):
+            nums.add(float(d))
     elif isinstance(obj, dict):
         for v in obj.values():
             collect_values(v, nums, dates)
@@ -111,6 +112,8 @@ def render_fallback(results: list[dict]) -> str:
             if r.get("open_deals") is not None:
                 parts.append(f"Open deals: {len(r['open_deals'])} totalling {fmt_money(r.get('open_pipeline', 0))}.")
             parts.append(f"Open tickets: {len(r.get('open_tickets', []))}.")
+            for c in r.get("contacts", []):
+                parts.append(f"- {'Primary contact' if c.get('primary') else 'Contact'}: {c['name']}, {c['title']} ({c['email']}, {c['phone']})")
             continue
         if "groups" in r:
             parts.append(f"Open pipeline: {r['count']} deals, {fmt_money(r['total_amount'])} total, {fmt_money(r['weighted_amount'])} weighted.")

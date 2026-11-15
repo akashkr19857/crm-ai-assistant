@@ -303,3 +303,9 @@ def test_analytics_counts_intents(client, seeded):
     a = client.get("/api/analytics", headers=auth("admin")).json()
     assert a["messages"] > 0 and {"chitchat", "crm_data"} <= {i["intent"] for i in a["intents"]}
     assert a["access_denied"] >= 1
+
+
+def test_validator_accepts_digits_inside_text_values():
+    data = [{"contacts": [{"name": "Owen Nair", "phone": "+1-555-937-9747", "email": "owen.nair@cedar.example.com"}]}]
+    assert validate_answer("The primary contact is Owen Nair (+1-555-937-9747).", data)["passed"]
+    assert not validate_answer("Call Owen Nair on +1-555-111-2222.", data)["passed"]

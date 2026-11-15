@@ -42,7 +42,7 @@ class CrossEncoderReranker:
                 if self.device != "cuda" or "CUDA" not in str(exc):
                     raise
                 # the GPU was reset (laptop TDR); CUDA is unusable in this process now, so continue on CPU
-                logging.getLogger("rfp.reranker").warning("CUDA failure in reranker, switching to CPU: %s", exc)
+                logging.getLogger("crm.reranker").warning("CUDA failure in reranker, switching to CPU: %s", exc)
                 self.device = "cpu"
                 self.model = self._load("cpu")
                 scores = self.model.predict(pairs, batch_size=16, activation_fn=torch.nn.Sigmoid(), show_progress_bar=False)

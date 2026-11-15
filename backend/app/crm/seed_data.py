@@ -120,7 +120,9 @@ def seed_crm(seed: int = 7, today: date | None = None, reset: bool = False) -> d
             for _ in range(rng.choices([0, 1, 2, 3], weights=[3, 4, 2, 1])[0]):
                 pri = rng.choices(["P1", "P2", "P3", "P4"], weights=[1, 3, 4, 2])[0]
                 status = rng.choices(["open", "pending", "resolved"], weights=[4, 2, 4])[0]
-                created = datetime.combine(today, time(9), tzinfo=timezone.utc) - timedelta(hours=rng.randrange(1, 24 * 20))
+                # resolved tickets can be old; open ones are recent, so roughly half are still inside their SLA window
+                age = rng.randrange(1, 24 * 20) if status == "resolved" else rng.randrange(1, SLA_HOURS[pri] * 2 + 2)
+                created = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0) - timedelta(hours=age)
                 db.add(Ticket(account_id=acc.id, subject=rng.choice(TICKET_SUBJECTS), priority=pri, status=status,
                               assignee_id=rng.choice(SUPPORT_AGENTS), created_at=created,
                               sla_due=created + timedelta(hours=SLA_HOURS[pri])))

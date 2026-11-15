@@ -1,9 +1,9 @@
-"""Record the demo video of the real running app (start it with run_demo.bat and analyse the RFPs first).
+"""Record the demo video of the real running app (start it with run_demo.bat first).
 
     python demo/record_demo.py        → demo/demo.mp4, demo/demo.gif, demo/screenshots/*.png
 
-Uses the shared recorder (Playwright video + ffmpeg) in ../_shared/record_demo.py. Everything shown is the live app:
-real public RFPs, real analysis results stored by the local LLM, a live Q&A call.
+Uses the shared recorder (Playwright video + ffmpeg) in ../_shared/record_demo.py. Every answer in the video is
+generated live by the local LLM against the demo CRM.
 """
 from __future__ import annotations
 
@@ -14,13 +14,29 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[1] / "_shared"))
 from record_demo import record  # noqa: E402
 
-WEB = "http://localhost:3200"
+WEB = "http://localhost:3300"
 SHOTS = HERE / "screenshots"
-TENDER = 1  # Champaign County CCMS RFP
 
 
 async def shot(page, name: str) -> None:
     await page.screenshot(path=str(SHOTS / f"{name}.png"))
+
+
+async def ask(page, text: str, timeout: int = 240_000) -> None:
+    before = await page.locator("[data-testid=assistant-message]").count()
+    await page.fill("[data-testid=chat-input]", text)
+    await page.click("[data-testid=send]")
+    await page.wait_for_function(f"() => document.querySelectorAll('[data-testid=assistant-message]').length > {before}", timeout=timeout)
+    await page.wait_for_timeout(600)
+
+
+async def login(page, user: str) -> None:
+    await page.goto(WEB)
+    await page.evaluate("localStorage.clear()")
+    await page.goto(WEB)
+    await page.wait_for_selector(f"[data-testid=login-{user}]")
+    await page.click(f"[data-testid=login-{user}]")
+    await page.wait_for_selector("[data-testid=chat-input]")
 
 
 async def steps(page, caption) -> None:
@@ -28,71 +44,67 @@ async def steps(page, caption) -> None:
     await page.goto(WEB)
     await page.evaluate("localStorage.clear()")
     await page.goto(WEB)
-    await caption("DMS RFP Intelligence: GenAI tender analysis that runs on a local LLM")
-    await page.wait_for_selector("[data-testid=login-bid-manager]")
+    await page.wait_for_selector("[data-testid=login-ananya]")
+    await caption("Each role sees different CRM data; the assistant enforces the same rules", 3500)
+    await login(page, "ananya")
+    await caption("Signed in as Ananya, a sales rep. Ask about the CRM in plain English", 2500)
+
+    await ask(page, "What is my open pipeline by stage?")
+    await caption("Intent: CRM data → pipeline_summary tool → answer → every number validated", 5000)
+    await shot(page, "01_pipeline")
+
+    await ask(page, "Tell me about Cedar Energy")
+    await caption("Account 360 from the CRM API, with contacts, deals and tickets", 3500)
+    await ask(page, "What about their open tickets?")
+    await caption("Multi-turn: 'their' is resolved to Cedar Energy from conversation memory", 5000)
+    await shot(page, "02_multi_turn")
+
+    await ask(page, "Who has to approve a 15% discount?")
+    await caption("Knowledge question → RAG over the sales playbook, with a citation", 3000)
+    cite = page.locator("[data-testid=assistant-message]").last.locator("[data-testid=citation]")
+    if await cite.count():
+        await cite.first.click()
+        await page.wait_for_timeout(1500)
+    await caption("Click a citation to see the exact highlighted source page", 4000)
+    await shot(page, "03_knowledge")
+
+    await ask(page, "Create a task on Cedar Energy to send the renewal quote next week")
+    await page.wait_for_selector("[data-testid=action-card]")
+    await caption("Workflow intent: the assistant prepares the change but waits for confirmation", 4000)
+    await page.click("[data-testid=confirm-action]")
+    await page.wait_for_timeout(2000)
+    await caption("Confirmed → task created through the CRM API and written to the audit log", 3500)
+    await shot(page, "04_workflow")
+
+    await page.goto(f"{WEB}/crm")
+    await page.click("[data-testid=crm-tab-audit]")
+    await page.wait_for_selector("[data-testid=audit-log]")
+    await caption("Audit log of every change made through the assistant", 3000)
+    await page.click("[data-testid=crm-tab-accounts]")
+    await page.wait_for_selector("[data-testid=accounts-table]")
+    await caption("CRM data page: Ananya sees only her own 10 accounts", 3000)
+
+    await login(page, "lena")
+    await caption("Now Lena, a support agent: no access to deals or revenue", 2500)
+    await ask(page, "Show me the pipeline")
+    await caption("Access control: the tool call is denied for her role, nothing leaks", 4000)
+    await ask(page, "How many open P1 or P2 tickets are there?")
+    await caption("But support data works, from the same assistant", 3500)
+    await shot(page, "05_support_rbac")
+    await ask(page, "How do I fix an SSO login loop after a password reset?")
+    await caption("Product help answered from the help center, with citation", 3500)
+
+    await login(page, "admin")
+    await page.goto(f"{WEB}/analytics")
     await page.wait_for_timeout(2500)
-    await page.click("[data-testid=login-bid-manager]")
-    await page.wait_for_selector("[data-testid=tender-list] [data-testid=bid-score]")
-    await caption("Tender pipeline: 3 real public government RFPs, each analysed end to end", 4500)
-    await shot(page, "01_tenders")
-
-    await page.click(f"[data-testid=tender-{TENDER}] a")
-    await page.wait_for_selector("[data-testid=key-facts]")
-    await caption("Bid / no-bid score + key facts extracted from a 30-page RFP", 4000)
-    await shot(page, "02_overview")
-    await caption("Every fact is source-grounded: click a page to see the exact highlighted passage")
-    await page.locator("[data-testid=key-facts] [data-testid=page-link]").first.click()
-    await page.wait_for_selector("[data-testid=page-image]")
-    await page.wait_for_timeout(4000)
-    await page.mouse.wheel(0, 650)
-    await caption("Evaluation criteria and timing, measured on an RTX 4060 laptop GPU", 3500)
-    await page.mouse.wheel(0, -2000)
-
-    await page.click("[data-testid=tab-requirements]")
-    await page.wait_for_selector("[data-testid=req-table]")
-    await caption("Requirement extraction: every bidder obligation, categorised, with its RFP page", 4000)
-    await shot(page, "03_requirements")
-    await page.select_option("[data-testid=status-filter]", "gap")
-    await caption("Compliance vs the company knowledge base: gaps found automatically, with evidence", 3500)
-    links = page.locator("[data-testid=req-table] tr").nth(1).locator("[data-testid=page-link]")
-    if await links.count() > 1:
-        await links.nth(1).click()
-        await caption("Evidence comes from the organisation's own documents (Word + PDF)", 4000)
-    await shot(page, "04_compliance_gaps")
-
-    await page.click("[data-testid=tab-risks]")
-    await page.wait_for_selector("[data-testid=risk-list]")
-    await caption("Risk & gap detection: RFP clauses compared with our standard terms", 4500)
-    await shot(page, "05_risks")
-
-    await page.click("[data-testid=tab-proposal]")
-    await page.wait_for_selector("[data-testid=proposal-section]")
-    await caption("Automated proposal response, drafted from the reusable knowledge base", 3500)
-    await caption("K = knowledge-base citation, R = RFP citation, yellow = needs the bid team's input", 4000)
-    await page.mouse.wheel(0, 700)
-    await page.wait_for_timeout(1500)
-    await caption("Exports to Word with a compliance matrix and risk register appended", 3000)
-    await shot(page, "06_proposal")
-    await page.mouse.wheel(0, -3000)
-
-    await page.click("[data-testid=tab-ask]")
-    await page.fill("[data-testid=ask-input]", "Where must County data be stored, and do we comply?")
-    await caption("Ask anything: RAG over the RFP + knowledge base (hybrid search + reranker)")
-    await page.click("[data-testid=ask-send]")
-    await page.wait_for_selector("[data-testid=ask-answer]", timeout=240_000)
-    await caption("Grounded answer with page-level citations, generated locally", 4500)
-    await shot(page, "07_ask")
-
+    await caption("Analytics: intents, tool usage, latency, validation outcomes", 3500)
+    await shot(page, "06_analytics")
     await page.goto(f"{WEB}/evaluation")
     await page.wait_for_selector("[data-testid=eval-metric]")
-    await caption("Measured accuracy against a hand-labelled answer key, nothing estimated", 5000)
-    await shot(page, "08_evaluation")
-    await page.goto(f"{WEB}/knowledge")
-    await page.wait_for_selector("[data-testid=doc-table]")
-    await caption("Knowledge base: company profile, policies, past performance (PDF + DOCX)", 3500)
+    await caption("Measured accuracy on scripted conversations vs SQL ground truth", 5000)
+    await shot(page, "07_evaluation")
     await caption("")
 
 
 if __name__ == "__main__":
-    record(steps, out_dir=HERE, title="DMS RFP Intelligence System",
-           subtitle="GenAI-powered RFP / tender intelligence · RAG · local LLM")
+    record(steps, out_dir=HERE, title="CRM AI Assistant", subtitle="GenAI · RAG · intent routing · CRM tools · local LLM")

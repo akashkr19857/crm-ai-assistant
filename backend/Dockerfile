@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgl1 libglib2
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend backend
-COPY data/manifest.json data/download_data.py data/make_knowledge_base.py data/
-RUN python data/download_data.py
+COPY data/make_docs.py data/
+RUN python data/make_docs.py
 WORKDIR /app/backend
-EXPOSE 8200
-CMD ["sh", "-c", "python scripts/seed.py && uvicorn app.main:app --host 0.0.0.0 --port 8200"]
+EXPOSE 8300
+CMD ["sh", "-c", "python scripts/seed.py && uvicorn app.main:app --host 0.0.0.0 --port 8300"]

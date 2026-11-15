@@ -1,7 +1,7 @@
 # Not built on the dev laptop (no Docker there).
 FROM node:22-alpine AS build
 WORKDIR /web
-ARG NEXT_PUBLIC_API_URL=http://localhost:8200
+ARG NEXT_PUBLIC_API_URL=http://localhost:8300
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -10,5 +10,5 @@ RUN npm run build
 FROM node:22-alpine
 WORKDIR /web
 COPY --from=build /web ./
-EXPOSE 3200
+EXPOSE 3300
 CMD ["npm", "run", "start"]

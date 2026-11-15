@@ -16,7 +16,7 @@ from .chunker import chunk_pages
 from .docx_parser import docx_title, iter_docx_parts
 from .pdf import OcrFn, PageContent, iter_pages, pdf_title
 
-log = logging.getLogger("rfp.ingest")
+log = logging.getLogger("crm.ingest")
 SUPPORTED = (".pdf", ".docx")
 
 

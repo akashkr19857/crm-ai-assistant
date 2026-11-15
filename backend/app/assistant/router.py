@@ -21,7 +21,8 @@ Classify the user's LATEST message into exactly one intent:
   health scores, activities/tasks, support tickets ("show my open deals", "which accounts renew this quarter",
   "how many P1 tickets are open", "what about their contacts?").
 - "knowledge": how-to / product / policy questions answered from documentation: product features and troubleshooting,
-  SLAs, pricing, discount approval rules, sales process, playbooks ("how do I fix SSO login loop", "who approves a 15% discount").
+  SLAs, edition pricing, discount approval rules, sales process, definitions of deal stages and their probabilities,
+  playbooks. Questions about what a stage, edition or policy MEANS are knowledge, not crm_data ("how do I fix SSO login loop", "who approves a 15% discount").
 - "workflow": the user asks to DO something that changes CRM data: create a task/reminder/follow-up, log a note,
   move/update a deal stage, escalate a ticket.
 - "chitchat": greetings, thanks, questions about what the assistant can do.

@@ -37,7 +37,9 @@ class Settings(BaseSettings):
     candidates: int = 20
     top_k: int = 5
     rrf_k: int = 60
-    not_found_threshold: float = 0.02
+    # Only obviously unrelated questions are refused on the reranker score alone; the LLM's own "not found" check
+    # handles the rest (measured: an answerable pricing question scored 0.009, an unanswerable one 0.049).
+    not_found_threshold: float = 0.003
 
     # Chunking
     chunk_chars: int = 1100

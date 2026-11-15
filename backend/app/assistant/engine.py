@@ -160,6 +160,16 @@ def n_crm(state: State) -> State:
                           "candidates": exc.candidates, "ms": round((time.perf_counter() - t1) * 1000, 1)})
             steps = _step({**state, "steps": steps}, "tool", f"{c['tool']} {exc.kind}: {exc}", t1, tool=c["tool"])
     ok = [t for t in trace if t["ok"]]
+    if not ok and state["route"].account and all(t.get("kind") == "invalid" for t in trace):
+        # the planner produced only invalid calls, but the question is about a known account: show that account
+        t1 = time.perf_counter()
+        try:
+            trace.append(T.run(p, "get_account", {"account": state["route"].account}))
+            steps = _step({**state, "steps": steps}, "tool", "recovered with get_account", t1, tool="get_account")
+        except T.ToolError as exc:
+            trace.append({"tool": "get_account", "args": {"account": state["route"].account}, "ok": False, "error": str(exc),
+                          "kind": exc.kind, "candidates": exc.candidates, "ms": round((time.perf_counter() - t1) * 1000, 1)})
+        ok = [t for t in trace if t["ok"]]
     denied = next((t for t in trace if t.get("kind") == "denied"), None)
     missing = next((t for t in trace if t.get("kind") == "not_found"), None)
     if not ok:

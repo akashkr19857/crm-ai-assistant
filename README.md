@@ -99,8 +99,8 @@ not run on the development laptop, which has no Docker.
 ## Tests
 
 ```bash
-python -m pytest                     # 62 tests: access control, tools, validation, router, full graph, workflows, API, WebSocket, RAG
-python -m pytest tests/e2e           # Playwright end-to-end test against the running app
+python -m pytest                     # 62 tests (all passing): access control, tools, validation, router, full graph, workflows, API, WebSocket, RAG
+python -m pytest tests/e2e           # Playwright end-to-end test against the running app (passing)
 python backend/eval/run_eval.py --release v1.0.0 --label baseline   # end-to-end evaluation with the local LLM
 ```
 
@@ -116,7 +116,11 @@ names, `example.com` emails, 555 phone numbers). The 12 help-center and playbook
 
 ## Screenshots
 
-_Demo video and screenshots: run `python demo/record_demo.py` with the app running (not recorded yet)._
+| | |
+|---|---|
+| ![pipeline](demo/screenshots/01_pipeline.png) | ![multi-turn](demo/screenshots/02_multi_turn.png) |
+| ![knowledge](demo/screenshots/03_knowledge.png) | ![workflow](demo/screenshots/04_workflow.png) |
+| ![support rbac](demo/screenshots/05_support_rbac.png) | ![evaluation](demo/screenshots/07_evaluation.png) |
 
 ## Limitations & roadmap
 

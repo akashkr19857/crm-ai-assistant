@@ -309,3 +309,12 @@ def test_validator_accepts_digits_inside_text_values():
     data = [{"contacts": [{"name": "Owen Nair", "phone": "+1-555-937-9747", "email": "owen.nair@cedar.example.com"}]}]
     assert validate_answer("The primary contact is Owen Nair (+1-555-937-9747).", data)["passed"]
     assert not validate_answer("Call Owen Nair on +1-555-111-2222.", data)["passed"]
+
+
+def test_invalid_plan_recovers_with_account_lookup(seeded):
+    acc = crm.search_accounts(P("ananya"))["accounts"][0]["name"]
+    m, _ = _ask("ananya", Script({"intent": "crm_data", "standalone_query": f"Tell me about {acc}", "account": acc},
+                                 {"calls": [{"tool": "pipeline_summary", "args": {"account": acc}}]}, [f"{acc} is an account."]),
+                f"Tell me about {acc}")
+    assert m.tool_calls[0]["kind"] == "invalid" and m.tool_calls[1]["tool"] == "get_account" and m.tool_calls[1]["ok"]
+    assert m.content == f"{acc} is an account."

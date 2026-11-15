@@ -24,10 +24,14 @@ export default function CrmPage() {
   const [error, setError] = React.useState("");
 
   React.useEffect(() => {
+    let current = true; // ignore responses for a tab the user already left
     setData(null);
     setError("");
     const path = { accounts: "/api/crm/accounts", pipeline: "/api/crm/deals", tickets: "/api/crm/tickets", tasks: "/api/crm/activities?open_tasks_only=true", audit: "/api/crm/audit" }[tab];
-    api<Row | Row[]>(path).then(setData).catch((e) => setError(e.message));
+    api<Row | Row[]>(path).then((d) => current && setData(d)).catch((e) => current && setError(e.message));
+    return () => {
+      current = false;
+    };
   }, [tab]);
 
   const rows = (key: string) => ((data as Row)?.[key] as Row[]) ?? [];
@@ -90,7 +94,7 @@ export default function CrmPage() {
             <div key={a.id as number} className="flex items-center gap-2 border-t py-1.5"><span className="min-w-0 flex-1">{a.subject as string} · <span className="text-muted-foreground">{a.account as string}</span></span><span className="tabular-nums text-xs">{a.due_date as string}</span>{a.overdue ? <Badge variant="destructive">overdue</Badge> : null}</div>
           ))}</CardContent></Card>
       )}
-      {!error && data && tab === "audit" && (
+      {!error && Array.isArray(data) && tab === "audit" && (
         <Card><CardHeader><CardTitle>Changes made through the assistant</CardTitle><CardDescription>Every write is confirmed by the user first and recorded here.</CardDescription></CardHeader>
           <CardContent className="space-y-1 text-sm" data-testid="audit-log">{(data as Row[]).map((a) => (
             <div key={a.id as number} className="flex flex-wrap items-center gap-2 border-t py-1.5"><Badge variant="outline">{a.action as string}</Badge><span>{a.target as string}</span><span className="text-xs text-muted-foreground">by {a.user_id as string} · {new Date(a.created_at as string).toLocaleString()}</span></div>

@@ -19,3 +19,5 @@ demo/_raw/
 test-results/
 data/knowledge_base/~$*
 data/docs/**/~$*
+
+.venv/

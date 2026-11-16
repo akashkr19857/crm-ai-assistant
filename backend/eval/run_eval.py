@@ -27,7 +27,6 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[0]))
-sys.path.insert(0, str(HERE.parents[2] / "_shared"))
 
 from app.assistant.engine import ask, new_conversation  # noqa: E402
 from app.assistant.validation import validate_answer  # noqa: E402
@@ -35,10 +34,7 @@ from app.config import PROJECT_ROOT, get_settings  # noqa: E402
 from app.db import Account, Activity, Contact, Deal, EvalRun, Ticket, session  # noqa: E402
 from app.seed import seed_all_crm  # noqa: E402
 
-try:
-    from gpulock import gpu_lock
-except ImportError:
-    from contextlib import nullcontext as gpu_lock  # type: ignore[assignment]
+from contextlib import nullcontext as gpu_lock  # single-process: no cross-process GPU lock needed
 
 log = logging.getLogger("eval")
 RESULTS_DIR = HERE / "results"
